@@ -1,0 +1,29 @@
+{
+  "id": 6,
+  "date": "2026-09-30",
+  "size": 5,
+  "grid": [
+    "##AIR",
+    "#HIDE",
+    "TIMED",
+    "AREA#",
+    "BED##"
+  ],
+  "clues": {
+    "across": {
+      "1": "What balloons and tires are filled with",
+      "4": "___-and-seek",
+      "5": "Measured with a stopwatch, like this puzzle",
+      "6": "Length times width",
+      "7": "Place to crash at night"
+    },
+    "down": {
+      "1": "Pointed, as a camera",
+      "2": "Light bulb moment",
+      "3": "Color of a ruby",
+      "4": "Bring on board, as staff",
+      "5": "Browser feature you may have too many of open"
+    }
+  },
+  "author": "Claude"
+}

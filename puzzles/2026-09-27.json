@@ -1,0 +1,29 @@
+{
+  "id": 3,
+  "date": "2026-09-27",
+  "size": 5,
+  "grid": [
+    "#RED#",
+    "HEART",
+    "ANGER",
+    "DELAY",
+    "#WED#"
+  ],
+  "clues": {
+    "across": {
+      "1": "Color of a stop sign",
+      "4": "Suit with a ♥",
+      "6": "A hot temper",
+      "7": "Bad news on a departures board",
+      "8": "Tied the knot"
+    },
+    "down": {
+      "1": "Extend, as a library loan",
+      "2": "Bird on many national emblems",
+      "3": "That Sunday-night feeling before a big Monday",
+      "4": "Owned, once",
+      "5": "Give it a ___ (attempt)"
+    }
+  },
+  "author": "Claude"
+}

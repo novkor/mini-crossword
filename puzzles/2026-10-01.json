@@ -1,0 +1,29 @@
+{
+  "id": 7,
+  "date": "2026-10-01",
+  "size": 5,
+  "grid": [
+    "#FAN#",
+    "PILOT",
+    "UNITE",
+    "TAKEN",
+    "#LED#"
+  ],
+  "clues": {
+    "across": {
+      "1": "Cooler on a hot day, or a devoted follower",
+      "4": "First episode of a new show",
+      "6": "Bring together",
+      "7": "Already spoken for",
+      "8": "Was in charge of"
+    },
+    "down": {
+      "1": "Last round of a tournament",
+      "2": "Like two peas in a pod",
+      "3": "Duly ___ (acknowledged)",
+      "4": "Placed",
+      "5": "Perfect score on many scales"
+    }
+  },
+  "author": "Claude"
+}

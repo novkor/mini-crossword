@@ -1,0 +1,29 @@
+{
+  "id": 1,
+  "date": "2026-09-25",
+  "size": 5,
+  "grid": [
+    "#DARE",
+    "RELAY",
+    "ABOVE",
+    "TUNES",
+    "EGGS#"
+  ],
+  "clues": {
+    "across": {
+      "1": "Truth or ___ (sleepover game)",
+      "5": "Race where a baton changes hands",
+      "6": "Upstairs, relative to you",
+      "7": "What a playlist is full of",
+      "8": "Breakfast items that can be scrambled"
+    },
+    "down": {
+      "1": "Track down why the code keeps crashing",
+      "2": "Sing-___ (group performance)",
+      "3": "Glowing reviews",
+      "4": "They're peeled when you're on the lookout",
+      "5": "Give one to five stars, say"
+    }
+  },
+  "author": "Claude"
+}

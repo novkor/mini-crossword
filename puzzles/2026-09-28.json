@@ -1,0 +1,29 @@
+{
+  "id": 4,
+  "date": "2026-09-28",
+  "size": 5,
+  "grid": [
+    "DARE#",
+    "ALARM",
+    "METRO",
+    "PRIOR",
+    "#TORE"
+  ],
+  "clues": {
+    "across": {
+      "1": "Double-___ (playground challenge)",
+      "5": "It might go off at 7 a.m.",
+      "7": "Subway, in Paris",
+      "8": "___ engagement (reason to decline)",
+      "9": "Ripped"
+    },
+    "down": {
+      "1": "Slightly wet",
+      "2": "Wide awake",
+      "3": "Aspect ___ (16:9, for a screen)",
+      "4": "404, for one",
+      "6": "Opposite of less"
+    }
+  },
+  "author": "Claude"
+}

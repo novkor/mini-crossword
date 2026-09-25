@@ -1,0 +1,29 @@
+{
+  "id": 5,
+  "date": "2026-09-29",
+  "size": 5,
+  "grid": [
+    "#CHEW",
+    "PHONE",
+    "LORDS",
+    "ASSET",
+    "NEED#"
+  ],
+  "clues": {
+    "across": {
+      "1": "Work on, as gum",
+      "5": "It buzzes in your pocket",
+      "6": "Titled nobles",
+      "7": "Something valuable on a balance sheet",
+      "8": "Can't do without"
+    },
+    "down": {
+      "1": "Picked",
+      "2": "Animal in a stable",
+      "3": "Wrapped up",
+      "4": "Where the sun sets",
+      "5": "Game ___ (strategy)"
+    }
+  },
+  "author": "Claude"
+}

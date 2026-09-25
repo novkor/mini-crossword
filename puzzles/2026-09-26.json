@@ -1,0 +1,29 @@
+{
+  "id": 2,
+  "date": "2026-09-26",
+  "size": 5,
+  "grid": [
+    "##BOW",
+    "#CUBE",
+    "THREE",
+    "EASY#",
+    "APT##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Take one when the curtain falls",
+      "4": "Ice ___ (drink chiller)",
+      "5": "Sides on a triangle",
+      "6": "Like a Monday mini, hopefully",
+      "7": "Fitting, as a nickname"
+    },
+    "down": {
+      "1": "Pop, like a soap bubble",
+      "2": "Follow, as the rules",
+      "3": "Tiny, in Scotland",
+      "4": "Bloke",
+      "5": "Earl Grey or chamomile"
+    }
+  },
+  "author": "Claude"
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Mini Crossword</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div class="title">
+        <h1 id="title">Mini Crossword</h1>
+        <span id="byline" class="muted"></span>
+      </div>
+      <div id="timer" class="timer" aria-label="Time">0:00</div>
+    </header>
+
+    <main class="layout">
+      <section class="play">
+        <div class="clue-bar">
+          <button id="prev-clue" class="icon" aria-label="Previous clue">‹</button>
+          <button id="clue-text" class="clue-text"></button>
+          <button id="next-clue" class="icon" aria-label="Next clue">›</button>
+        </div>
+
+        <div class="board-wrap">
+          <div id="board" class="board"></div>
+          <!-- Invisible input that holds keyboard focus, so tapping a cell opens the on-screen keyboard on mobile. -->
+          <input id="kbd" class="kbd" type="text" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" enterkeyhint="next" aria-label="Crossword input" />
+        </div>
+
+        <div id="tools" class="tools">
+          <button data-action="check-cell">Check cell</button>
+          <button data-action="check-puzzle">Check puzzle</button>
+          <button data-action="reveal-cell">Reveal cell</button>
+          <button data-action="clear" data-confirm="Clear all?">Clear</button>
+          <button data-action="give-up" data-confirm="Really give up?" class="danger">Give up</button>
+        </div>
+
+        <div id="done" class="done" hidden></div>
+      </section>
+
+      <section class="clues">
+        <div><h2>Across</h2><ol id="across"></ol></div>
+        <div><h2>Down</h2><ol id="down"></ol></div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
