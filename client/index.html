@@ -7,21 +7,44 @@
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="/src/style.css" />
   </head>
-  <body>
+  <body class="loading">
+    <!-- Loading screen: plain HTML/CSS so it shows instantly, before any JavaScript runs.
+         main.ts fades it out once the puzzle is on screen. -->
+    <div id="loader" class="loader" role="status" aria-live="polite">
+      <div class="loader-grid" aria-hidden="true">
+        <span style="--i: 0"></span><span style="--i: 1"></span><span style="--i: 2"></span>
+        <span style="--i: 1"></span><span class="black"></span><span style="--i: 3"></span>
+        <span style="--i: 2"></span><span style="--i: 3"></span><span style="--i: 4"></span>
+      </div>
+      <p class="loader-title">Mini Crossword</p>
+      <p id="loader-text" class="muted">Loading…</p>
+    </div>
+
     <header class="top">
       <div class="title">
         <h1 id="title">Mini Crossword</h1>
         <span id="byline" class="muted"></span>
       </div>
-      <div id="timer" class="timer" aria-label="Time">0:00</div>
+      <div class="top-right">
+        <div id="me" class="me"></div>
+        <div class="timer" aria-label="Time"><span data-icon="clock"></span><span id="timer">0:00</span></div>
+      </div>
     </header>
 
-    <main class="layout">
+    <!-- Puzzle / Results switcher. Results stays locked until today's attempt is over. -->
+    <nav id="tabs" class="tabs" role="tablist" hidden>
+      <button id="tab-puzzle" role="tab" aria-controls="view-puzzle" aria-selected="true"><span data-icon="grid"></span>Puzzle</button>
+      <button id="tab-results" role="tab" aria-controls="view-results" aria-selected="false" aria-disabled="true">
+        <span data-icon="lock" id="results-icon"></span>Results
+      </button>
+    </nav>
+
+    <main id="view-puzzle" class="layout" role="tabpanel" aria-labelledby="tab-puzzle">
       <section class="play">
         <div class="clue-bar">
-          <button id="prev-clue" class="icon" aria-label="Previous clue">‹</button>
-          <button id="clue-text" class="clue-text"></button>
-          <button id="next-clue" class="icon" aria-label="Next clue">›</button>
+          <button id="prev-clue" class="icon-btn" aria-label="Previous clue"><span data-icon="chevron-left"></span></button>
+          <button id="clue-text" class="clue-text" aria-label="Switch direction"></button>
+          <button id="next-clue" class="icon-btn" aria-label="Next clue"><span data-icon="chevron-right"></span></button>
         </div>
 
         <div class="board-wrap">
@@ -38,7 +61,11 @@
           <button data-action="give-up" data-confirm="Really give up?" class="danger">Give up</button>
         </div>
 
-        <div id="done" class="done" hidden></div>
+        <!-- Shown instead of the tools once the attempt is over. -->
+        <div id="over-bar" class="over-bar" hidden>
+          <span id="over-text"></span>
+          <button id="see-results" class="primary">See results</button>
+        </div>
       </section>
 
       <section class="clues">
@@ -46,6 +73,8 @@
         <div><h2>Down</h2><ol id="down"></ol></div>
       </section>
     </main>
+
+    <main id="view-results" class="results" role="tabpanel" aria-labelledby="tab-results" hidden></main>
 
     <div id="toast" class="toast" role="status"></div>
     <script type="module" src="/src/main.ts"></script>

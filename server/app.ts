@@ -1,14 +1,14 @@
 // The API. All checking and timing happens here. The client only ever gets
 // right/wrong per cell, and never the solution until its attempt has ended.
-//
-// FREE AND FAIR: the daily puzzle routes below must never depend on paid
-// entitlements. Nothing bought may help anyone solve faster or rank higher.
 
 import express, { type Request, type Response } from 'express';
 import { solutionOf, toView } from '../shared/puzzle';
-import type { AttemptState, PuzzleFile } from '../shared/types';
-import { requireUser } from './auth';
-import { getAttempt, saveAttempt, startAttempt, type Attempt, type DB } from './db';
+import { streak } from '../shared/format';
+import type { AttemptState, Leaderboard, LeaderboardEntry, PuzzleFile } from '../shared/types';
+import { exchangeCode, requireUser, verifyDiscordToken, type VerifyToken } from './auth';
+import {
+  finishedAttempts, getAttempt, saveAttempt, solvedDays, startAttempt, upsertUser, type Attempt, type DB,
+} from './db';
 import { puzzleForDay, utcDay } from './puzzles';
 
 interface Options {
@@ -16,12 +16,30 @@ interface Options {
   puzzleFor?: (day: string) => PuzzleFile; // tests pin the puzzle
   now?: () => number; // tests control the clock
   allowDevUsers?: boolean; // fake users for local testing, never in production
+  verifyToken?: VerifyToken; // tests fake Discord
 }
 
-export function createApp({ db, puzzleFor = puzzleForDay, now = Date.now, allowDevUsers = false }: Options) {
+export function createApp({
+  db,
+  puzzleFor = puzzleForDay,
+  now = Date.now,
+  allowDevUsers = false,
+  verifyToken = verifyDiscordToken,
+}: Options) {
   const app = express();
   app.use(express.json({ limit: '10kb' }));
-  app.use('/api', requireUser({ allowDevUsers }));
+
+  // Step 2 of Discord sign-in: trade the code from authorize() for an access token.
+  // This is the only /api route that works without being signed in.
+  app.post('/api/token', async (req, res) => {
+    const code = req.body?.code;
+    if (typeof code !== 'string' || !code) return void res.status(400).json({ error: 'Missing code' });
+    const accessToken = await exchangeCode(code).catch(() => null);
+    if (!accessToken) return void res.status(401).json({ error: 'Discord sign-in failed' });
+    res.json({ access_token: accessToken });
+  });
+
+  app.use('/api', requireUser({ allowDevUsers, verifyToken }));
 
   const today = () => utcDay(new Date(now()));
 
@@ -83,8 +101,9 @@ export function createApp({ db, puzzleFor = puzzleForDay, now = Date.now, allowD
   app.get('/api/puzzle', (req, res) => {
     const day = today();
     const puzzle = puzzleFor(day);
+    upsertUser(db, req.user!); // keep the leaderboard name and avatar current
     const attempt = startAttempt(db, req.user!.id, day, puzzle.id, puzzle.size ** 2, now());
-    res.json({ puzzle: toView(puzzle), attempt: stateOf(attempt, puzzle) });
+    res.json({ me: req.user, puzzle: toView(puzzle), attempt: stateOf(attempt, puzzle) });
   });
 
   // Save progress. Solving is detected here, on the server.
@@ -136,6 +155,29 @@ export function createApp({ db, puzzleFor = puzzleForDay, now = Date.now, allowD
     a.endedAt = now();
     if (!saveAttempt(db, a)) return void res.status(409).json({ error: "You've already finished today's puzzle." });
     res.json({ attempt: stateOf(a, ctx.puzzle) });
+  });
+
+  // Today's results. Wordle rules: you only get to see them once your own attempt
+  // is over, and that's enforced HERE (403), not just hidden in the UI.
+  app.get('/api/leaderboard', (req, res) => {
+    const day = today();
+    const mine = getAttempt(db, req.user!.id, day);
+    if (!mine || mine.status === 'playing') {
+      return void res.status(403).json({ error: "Finish today's puzzle to see the leaderboard." });
+    }
+    let rank = 0;
+    const entries: LeaderboardEntry[] = finishedAttempts(db, day).map((r) => ({
+      rank: r.status === 'solved' ? ++rank : null,
+      user: { id: r.user_id, username: r.username, avatar: r.avatar },
+      status: r.status,
+      assisted: !!r.assisted,
+      timeMs: r.status === 'solved' ? r.time_ms : null,
+      isMe: r.user_id === req.user!.id,
+    }));
+    // giving up today ends the streak
+    const currentStreak = mine.status === 'solved' ? streak(solvedDays(db, req.user!.id), day) : 0;
+    const body: Leaderboard = { puzzleId: mine.puzzleId, entries, streak: currentStreak };
+    res.json(body);
   });
 
   return app;

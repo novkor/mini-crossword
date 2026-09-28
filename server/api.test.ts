@@ -5,7 +5,9 @@ import type { AddressInfo } from 'node:net';
 import type { Server } from 'node:http';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { solutionOf } from '../shared/puzzle';
+import type { User } from '../shared/types';
 import { createApp } from './app';
+import type { VerifyToken } from './auth';
 import { openDb } from './db';
 import { loadPuzzles } from './puzzles';
 
@@ -19,6 +21,16 @@ let t = 0; // the test controls the server's clock
 let server: Server;
 let base = '';
 
+// A fake Discord: two valid tokens, anything else is invalid, "down" means Discord is unreachable.
+const fakeDiscord: VerifyToken = async (token) => {
+  if (token === 'down') throw new Error('Discord answered 500');
+  const users: Record<string, User> = {
+    'token-alice': { id: '111', username: 'Alice', avatar: 'abc' },
+    'token-bob': { id: '222', username: 'Bob', avatar: null },
+  };
+  return users[token] ?? null;
+};
+
 async function start(allowDevUsers = true) {
   // a fresh in-memory database per test; P1 on 25 Sep, P2 on 26 Sep
   const app = createApp({
@@ -26,6 +38,7 @@ async function start(allowDevUsers = true) {
     now: () => t,
     puzzleFor: (day) => (day === '2026-09-26' ? P2 : P1),
     allowDevUsers,
+    verifyToken: fakeDiscord,
   });
   server = app.listen(0);
   await new Promise((r) => server.once('listening', r));
@@ -59,6 +72,45 @@ describe('sign-in', () => {
     server.close();
     await start(false);
     expect((await as('alice').raw('/puzzle')).status).toBe(401);
+  });
+});
+
+describe('Discord sign-in', () => {
+  const withToken = (token: string, path: string, body?: object) =>
+    fetch(base + path, {
+      method: body ? 'POST' : 'GET',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: body && JSON.stringify({ puzzleId: 1, ...body }),
+    });
+
+  it('identifies the player from their Discord access token', async () => {
+    server.close();
+    await start(false); // production mode
+    const res = await (await withToken('token-alice', '/puzzle')).json();
+    expect(res.me).toEqual({ id: '111', username: 'Alice', avatar: 'abc' });
+  });
+
+  it('rejects an invalid token, and says so when Discord is down', async () => {
+    expect((await withToken('forged', '/puzzle')).status).toBe(401);
+    expect((await withToken('down', '/puzzle')).status).toBe(503);
+  });
+
+  it('never trusts a user ID sent by the client', async () => {
+    await withToken('token-alice', '/puzzle');
+    await withToken('token-bob', '/puzzle');
+    // alice tries to save into bob's attempt by naming him in the body
+    const letters = empty();
+    letters[1] = 'Z';
+    await withToken('token-alice', '/save', { letters, userId: '222', user: { id: '222' } });
+    const bob = await (await withToken('token-bob', '/puzzle')).json();
+    expect(bob.attempt.letters).toEqual(empty());
+    const alice = await (await withToken('token-alice', '/puzzle')).json();
+    expect(alice.attempt.letters[1]).toBe('Z');
+  });
+
+  it('the token exchange needs a code', async () => {
+    const res = await fetch(`${base}/token`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+    expect(res.status).toBe(400);
   });
 });
 
@@ -206,6 +258,64 @@ describe('the daily switch at midnight UTC', () => {
     const today = await alice.get('/puzzle');
     expect(today.puzzle.id).toBe(P2.id);
     expect(today.attempt).toMatchObject({ status: 'playing', elapsedMs: 0 });
+  });
+});
+
+describe('leaderboard', () => {
+  /** Load the puzzle at `startAt`, then finish at `endAt`: solve (optionally with a check first) or give up. */
+  async function finish(user: string, how: 'solve' | 'assisted' | 'gaveup', seconds: number) {
+    const c = as(user);
+    await c.get('/puzzle');
+    t += seconds * 1000;
+    if (how === 'assisted') await c.post('/check', { letters: empty(), cells: [1] });
+    if (how === 'gaveup') await c.post('/give-up');
+    else await c.post('/save', { letters: SOLUTION });
+    t -= seconds * 1000; // everyone "starts" at the same moment in this test
+  }
+
+  it('is 403 until your own attempt has ended', async () => {
+    await finish('bob', 'solve', 60);
+    const alice = as('alice');
+    expect((await alice.raw('/leaderboard')).status).toBe(403); // never loaded the puzzle
+    await alice.get('/puzzle');
+    expect((await alice.raw('/leaderboard')).status).toBe(403); // still playing
+    await alice.post('/give-up');
+    expect((await alice.raw('/leaderboard')).status).toBe(200); // done (even by giving up)
+  });
+
+  it('ranks unassisted solves first, then assisted, then give-ups; never shows players still playing', async () => {
+    await finish('slow', 'solve', 90);
+    await finish('helped', 'assisted', 30); // fastest, but assisted
+    await finish('quitter', 'gaveup', 10);
+    await finish('fast', 'solve', 45);
+    await as('stillplaying').get('/puzzle');
+
+    const res = await as('fast').raw('/leaderboard');
+    const text = await res.text();
+    const board = JSON.parse(text);
+    expect(
+      board.entries.map((e: any) => [e.rank, e.user.username, e.timeMs, e.assisted, e.status, e.isMe]),
+    ).toEqual([
+      [1, 'fast', 45_000, false, 'solved', true],
+      [2, 'slow', 90_000, false, 'solved', false],
+      [3, 'helped', 30_000, true, 'solved', false],
+      [null, 'quitter', null, false, 'gaveup', false],
+    ]);
+    // no grids: none of the answers appear anywhere in the response
+    for (const word of ANSWER_WORDS) expect(text.toUpperCase()).not.toContain(word);
+  });
+
+  it('shows the streak of consecutive solved days, and giving up resets it', async () => {
+    await finish('alice', 'solve', 60);
+    await finish('bob', 'gaveup', 5);
+    expect((await as('alice').get('/leaderboard')).streak).toBe(1);
+    expect((await as('bob').get('/leaderboard')).streak).toBe(0);
+
+    t = Date.parse('2026-09-26T12:00:00Z'); // the next day: puzzle #2
+    const alice = as('alice');
+    expect((await alice.get('/puzzle')).puzzle.id).toBe(P2.id);
+    await alice.raw('/save', { puzzleId: P2.id, letters: solutionOf(P2) });
+    expect((await alice.get('/leaderboard')).streak).toBe(2);
   });
 });
 

@@ -1,0 +1,6 @@
+# Caddy sits in front of the game and serves it over HTTPS.
+# It gets and renews the certificate by itself. Step 7 of deploy/GOOGLE-CLOUD.md
+# replaces DOMAIN with your address (e.g. minicrossword.duckdns.org).
+DOMAIN {
+	reverse_proxy localhost:3000
+}

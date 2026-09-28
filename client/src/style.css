@@ -1,17 +1,23 @@
-/* Discord dark theme colors */
+/* ---------- Design tokens: Discord's dark theme ---------- */
 :root {
   --bg: #313338;
   --panel: #2b2d31;
   --deep: #1e1f22;
   --cell: #404249;
+  --cell-hover: #4a4c54;
+  --line: #3f4147; /* dividers */
   --text: #f2f3f5;
-  --muted: #949ba4;
+  --muted: #949ba4; /* 4.5:1 on --bg */
+  --num: #b5bac1; /* clue numbers: 5.1:1 on --cell */
   --blurple: #5865f2;
+  --blurple-hover: #4752c4;
   --word: #3c4270; /* active word tint */
-  --cross: #35373c;
   --green: #23a55a;
-  --red: #f23f43;
+  --green-text: #7dd3a0;
+  --red: #ff7a7e; /* 4:1 on --cell, readable as a large letter */
   --yellow: #f0b232;
+  --radius: 8px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
   color-scheme: dark;
 }
 
@@ -22,52 +28,112 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font: 15px/1.4 'gg sans', 'Noto Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  font: 15px/1.45 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-feature-settings: 'cv11', 'ss01'; /* Inter's rounder, friendlier letter shapes */
+  padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   -webkit-tap-highlight-color: transparent;
 }
 
+.muted { color: var(--muted); }
+.icon { width: 18px; height: 18px; flex: none; }
+
+/* ---------- Buttons ---------- */
 button {
   font: inherit;
+  font-weight: 500;
   color: var(--text);
   background: var(--cell);
   border: 0;
-  border-radius: 6px;
-  padding: 8px 12px;
+  border-radius: var(--radius);
+  min-height: 44px; /* comfortable touch target */
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.15s var(--ease), transform 0.1s var(--ease);
 }
-button:hover { background: #4e5058; }
+button:hover { background: var(--cell-hover); }
+button:active { transform: scale(0.97); }
 button:focus-visible { outline: 2px solid var(--blurple); outline-offset: 2px; }
+button.primary { background: var(--blurple); color: white; }
+button.primary:hover { background: var(--blurple-hover); }
 
-.muted { color: var(--muted); }
-
-/* ---- header ---- */
+/* ---------- Header ---------- */
 .top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 900px;
+  gap: 12px;
+  max-width: 920px;
   margin: 0 auto 12px;
 }
-.top h1 { font-size: 18px; margin: 0; }
+.top h1 { font-size: 20px; font-weight: 800; letter-spacing: -0.01em; margin: 0; }
 .top .muted { font-size: 12px; }
+.top-right { display: flex; align-items: center; gap: 12px; min-width: 0; }
+
+.me { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.me .name {
+  font-weight: 600;
+  font-size: 14px;
+  max-width: 14ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 420px) { .me .name { display: none; } } /* just the avatar on small phones */
+
+.avatar { width: 28px; height: 28px; border-radius: 50%; flex: none; object-fit: cover; }
+.avatar.initial {
+  display: grid;
+  place-items: center;
+  background: var(--blurple);
+  color: white;
+  font-weight: 700;
+  font-size: 13px;
+}
+
 .timer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-variant-numeric: tabular-nums;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 17px;
   background: var(--panel);
-  padding: 4px 12px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: var(--radius);
 }
-.solved .timer { color: var(--green); }
+.timer .icon { width: 16px; height: 16px; color: var(--muted); }
+.solved .timer { color: var(--green-text); }
 .over:not(.solved) .timer { color: var(--muted); }
 
-/* ---- layout: board on the left, clues on the right; stacked on phones ---- */
+/* ---------- Puzzle / Results tabs (a segmented control) ---------- */
+.tabs {
+  display: flex;
+  gap: 4px;
+  max-width: 920px;
+  margin: 0 auto 16px;
+  padding: 4px;
+  background: var(--deep);
+  border-radius: 10px;
+}
+.tabs button {
+  flex: 1;
+  background: transparent;
+  color: var(--muted);
+  min-height: 40px;
+}
+.tabs button:hover { color: var(--text); background: rgb(255 255 255 / 0.04); }
+.tabs button[aria-selected='true'] { background: var(--cell); color: var(--text); box-shadow: 0 1px 2px rgb(0 0 0 / 0.3); }
+.tabs button[aria-disabled='true'] { opacity: 0.6; }
+
+/* ---------- Puzzle view layout: board left, clues right; stacked on phones ---------- */
 .layout {
   display: grid;
-  gap: 20px;
-  max-width: 900px;
+  gap: 24px;
+  max-width: 920px;
   margin: 0 auto;
 }
 .play { width: 100%; max-width: 440px; margin: 0 auto; }
@@ -75,35 +141,44 @@ button:focus-visible { outline: 2px solid var(--blurple); outline-offset: 2px; }
   .layout { grid-template-columns: 440px 1fr; align-items: start; }
 }
 
-/* ---- active clue bar ---- */
+/* ---------- Active clue bar ---------- */
 .clue-bar {
   display: flex;
   align-items: stretch;
-  gap: 4px;
   background: var(--word);
-  border-radius: 8px;
-  margin-bottom: 10px;
-  min-height: 52px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  min-height: 56px;
+  overflow: hidden;
 }
-.clue-bar .icon { background: none; font-size: 22px; padding: 0 12px; }
+.icon-btn { background: none; padding: 0 12px; border-radius: 0; color: #c9cdfb; }
+.icon-btn:hover { background: rgb(255 255 255 / 0.06); color: white; }
+.icon-btn .icon { width: 20px; height: 20px; }
 .clue-text {
   flex: 1;
+  justify-content: flex-start;
+  gap: 10px;
   background: none;
   text-align: left;
+  font-size: 16px;
+  font-weight: 500;
   padding: 8px 4px;
+  border-radius: 0;
 }
-.clue-text:hover, .clue-bar .icon:hover { background: rgb(255 255 255 / 0.06); }
-.clue-text b { margin-right: 6px; }
+.clue-text:hover { background: rgb(255 255 255 / 0.04); }
+.clue-text:active { transform: none; }
+.clue-text b { font-weight: 800; color: #c9cdfb; flex: none; }
 
-/* ---- the grid ---- */
+/* ---------- The grid ---------- */
 .board-wrap { position: relative; container-type: inline-size; }
 .board {
   display: grid;
   grid-template-columns: repeat(var(--n), 1fr);
-  gap: 3px;
+  gap: 4px;
   background: var(--deep);
-  padding: 3px;
-  border-radius: 8px;
+  padding: 4px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
   touch-action: manipulation; /* no double-tap zoom */
   user-select: none;
 }
@@ -111,51 +186,72 @@ button:focus-visible { outline: 2px solid var(--blurple); outline-offset: 2px; }
   position: relative;
   aspect-ratio: 1;
   background: var(--cell);
-  border-radius: 4px;
+  border-radius: 6px;
+  box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.18); /* a little tile depth */
   cursor: pointer;
   display: grid;
   place-items: center;
-  transition: background 0.08s;
+  transition: background 0.12s var(--ease), box-shadow 0.12s var(--ease);
 }
-.cell.black { background: var(--deep); cursor: default; }
+.cell:hover { background: var(--cell-hover); }
+.cell.black { background: transparent; box-shadow: none; cursor: default; }
 .cell.word { background: var(--word); }
-.cell.sel { background: var(--blurple); }
+.cell.sel {
+  background: var(--blurple);
+  box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.2), 0 0 0 2px rgb(255 255 255 / 0.9);
+  z-index: 1;
+}
 .cell .num {
   position: absolute;
-  top: 3%;
-  left: 6%;
-  font-size: calc(22cqw / var(--n));
+  top: 4%;
+  left: 7%;
+  font-size: calc(21cqw / var(--n));
   font-weight: 600;
-  color: var(--muted);
+  line-height: 1;
+  color: var(--num);
 }
-.cell.sel .num, .cell.word .num { color: #c9cdfb; }
+.cell.word .num { color: #c9cdfb; }
+.cell.sel .num { color: white; }
 .cell .letter {
-  font-size: calc(55cqw / var(--n));
+  font-size: calc(52cqw / var(--n));
   font-weight: 700;
   line-height: 1;
   text-transform: uppercase;
+  transform: translateY(4%); /* optically centred under the number */
 }
-/* check / reveal marks */
-.cell.right .letter { color: #7dd3a0; }
+/* typing a letter: a quick pop */
+.cell.pop .letter { animation: pop 0.15s var(--ease); }
+@keyframes pop { 50% { transform: translateY(4%) scale(1.18); } }
+
+/* check / reveal marks (never colour alone: wrong also gets a slash, revealed a corner flag) */
+.cell.right .letter { color: var(--green-text); }
 .cell.wrong .letter { color: var(--red); }
-.cell.wrong::after { /* a red slash through wrong letters */
+.cell.wrong::after {
   content: '';
   position: absolute;
-  inset: 12%;
+  inset: 14%;
   background: linear-gradient(to top right, transparent calc(50% - 1.5px), var(--red) 50%, transparent calc(50% + 1.5px));
   pointer-events: none;
 }
-.cell.revealed::before { /* small corner triangle for revealed cells */
+.cell.revealed::before {
   content: '';
   position: absolute;
   top: 0;
   right: 0;
-  border: calc(12cqw / var(--n)) solid transparent;
+  border: calc(11cqw / var(--n)) solid transparent;
   border-top-color: var(--yellow);
   border-right-color: var(--yellow);
-  border-top-right-radius: 4px;
+  border-top-right-radius: 6px;
 }
 .over .cell { cursor: default; }
+.over .cell:hover { background: var(--cell); }
+
+/* solved: a green wave sweeps diagonally across the grid */
+.board.celebrate .cell:not(.black) { animation: wave 0.5s var(--ease) calc(var(--d) * 60ms) both; }
+@keyframes wave {
+  40% { transform: scale(1.08); background: var(--green); }
+  100% { transform: scale(1); }
+}
 
 /* The hidden input sits over the board but never catches taps (the cells do). */
 .kbd {
@@ -168,41 +264,42 @@ button:focus-visible { outline: 2px solid var(--blurple); outline-offset: 2px; }
   caret-color: transparent;
 }
 
-/* ---- tool buttons ---- */
+/* ---------- Tool buttons / finished bar ---------- */
 .tools {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-top: 14px;
 }
-.tools button { flex: 1 1 auto; font-size: 13px; }
+.tools button { grid-column: span 2; font-size: 14px; padding: 0 8px; }
+.tools button:nth-child(n + 4) { grid-column: span 3; } /* 3 tools on top, Clear + Give up below */
 .tools .danger { color: #fda4a6; }
-.tools .armed { background: var(--red); color: white; }
+.tools .armed { background: #da373c; color: white; }
 
-/* ---- finished panel ---- */
-.done {
-  margin-top: 12px;
-  padding: 16px;
+.over-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 8px 8px 8px 16px;
   background: var(--panel);
-  border-radius: 8px;
-  text-align: center;
+  border-radius: 10px;
+  font-weight: 600;
 }
-.done h2 { margin: 0 0 4px; font-size: 20px; }
-.done .big { font-size: 36px; font-weight: 800; margin: 0; font-variant-numeric: tabular-nums; }
-.done p { margin: 4px 0; }
 
-/* ---- clue lists ---- */
-.clues { display: grid; gap: 16px; }
+/* ---------- Clue lists ---------- */
+.clues { display: grid; gap: 20px; }
 @media (min-width: 520px) { .clues { grid-template-columns: 1fr 1fr; } }
-.clues h2 {
+.clues h2, .card h3 {
   font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--muted);
-  margin: 0 0 6px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--cell);
+  margin: 0 0 8px;
 }
+.clues h2 { padding-bottom: 8px; border-bottom: 1px solid var(--line); }
 .clues ol {
   position: relative; /* so li.offsetTop is measured from the list */
   list-style: none;
@@ -210,33 +307,177 @@ button:focus-visible { outline: 2px solid var(--blurple); outline-offset: 2px; }
   padding: 0;
   max-height: 60vh;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--deep) transparent;
 }
 .clues li {
   display: flex;
-  gap: 10px;
-  padding: 7px 8px;
+  gap: 12px;
+  padding: 8px 10px;
   border-left: 3px solid transparent;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background 0.12s var(--ease);
 }
 .clues li:hover { background: var(--panel); }
-.clues li b { min-width: 1.2em; text-align: right; }
+.clues li b { min-width: 1.3em; text-align: right; font-weight: 700; }
 .clues li.filled { color: var(--muted); }
 .clues li.cross { border-left-color: var(--word); }
-.clues li.active { background: var(--word); color: var(--text); }
+.clues li.active { background: var(--word); color: var(--text); border-left-color: var(--blurple); }
 
-/* ---- toast ---- */
+/* ---------- Results view ---------- */
+.results {
+  display: grid;
+  gap: 16px;
+  max-width: 920px;
+  margin: 0 auto;
+  align-items: start;
+}
+@media (min-width: 760px) { .results { grid-template-columns: 1fr 1fr; } }
+.card { background: var(--panel); border-radius: 12px; padding: 20px; }
+
+.result-card { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.result-badge {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin-bottom: 10px;
+}
+.result-badge .icon { width: 28px; height: 28px; stroke-width: 2.5; }
+.result-badge.ok { background: rgb(35 165 90 / 0.18); color: var(--green-text); }
+.result-badge.gaveup { background: var(--cell); color: var(--muted); }
+.result-card h2 { margin: 0; font-size: 22px; font-weight: 800; }
+.result-card .big { font-size: 44px; font-weight: 800; margin: 2px 0; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.result-card p { margin: 4px 0; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.chip .icon { width: 15px; height: 15px; }
+.chip.streak { background: rgb(240 178 50 / 0.15); color: var(--yellow); }
+
+.share { width: 100%; margin-top: 18px; }
+.share pre {
+  margin: 0 0 10px;
+  padding: 12px;
+  background: var(--deep);
+  border-radius: var(--radius);
+  font: inherit;
+  white-space: pre-wrap;
+  user-select: all; /* one tap selects it all, for manual copying */
+}
+.share-buttons { display: flex; gap: 8px; }
+.share-buttons button { flex: 1; }
+.next { display: flex; align-items: center; gap: 6px; margin-top: 16px !important; color: var(--muted); }
+.next .icon { width: 16px; height: 16px; }
+.next b { color: var(--text); font-variant-numeric: tabular-nums; }
+
+.card-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+.card-head h3 { margin: 0; }
+.card-head .muted { font-size: 13px; }
+.hint { font-size: 13px; margin: 12px 0 0; text-align: center; }
+
+.leaderboard { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.leaderboard li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  background: rgb(255 255 255 / 0.02);
+}
+.leaderboard li.mine { background: var(--word); }
+.leaderboard .rank {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.leaderboard [data-medal='1'] .rank { background: rgb(240 178 50 / 0.2); color: #f7c75e; }
+.leaderboard [data-medal='2'] .rank { background: rgb(181 186 193 / 0.2); color: #d4d7dc; }
+.leaderboard [data-medal='3'] .rank { background: rgb(216 140 74 / 0.2); color: #e8a66e; }
+.leaderboard .avatar { width: 32px; height: 32px; }
+.leaderboard .name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+.leaderboard .time { font-variant-numeric: tabular-nums; font-weight: 700; }
+.leaderboard .time.muted { font-weight: 500; }
+.badge {
+  margin-left: 8px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgb(240 178 50 / 0.15);
+  color: var(--yellow);
+  font-size: 11px;
+  font-weight: 600;
+  vertical-align: 1px;
+}
+
+.fatal { text-align: center; color: var(--muted); padding: 48px 16px; }
+
+/* ---------- Toast ---------- */
 .toast {
   position: fixed;
   left: 50%;
   bottom: max(24px, env(safe-area-inset-bottom));
-  transform: translate(-50%, 20px);
+  transform: translate(-50%, 16px);
   background: var(--deep);
-  padding: 10px 16px;
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgb(0 0 0 / 0.4);
+  padding: 12px 18px;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
+  font-weight: 500;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s, transform 0.2s;
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+  max-width: calc(100vw - 32px);
 }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------- Loading screen ---------- */
+body.loading > :not(.loader) { visibility: hidden; } /* no half-empty frame while we load */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 4px;
+  background: var(--bg);
+  transition: opacity 0.25s var(--ease);
+}
+.loader.done { opacity: 0; pointer-events: none; }
+.loader p { margin: 0; }
+.loader-title { font-size: 18px; font-weight: 800; margin-top: 14px !important; }
+.loader-grid { display: grid; grid-template-columns: repeat(3, 24px); gap: 4px; }
+.loader-grid span {
+  aspect-ratio: 1;
+  border-radius: 5px;
+  background: var(--cell);
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.18);
+  animation: loader-wave 1.4s var(--ease) calc(var(--i) * 0.12s) infinite;
+}
+.loader-grid span.black { background: transparent; box-shadow: none; animation: none; }
+@keyframes loader-wave {
+  0%, 60%, 100% { background: var(--cell); }
+  25% { background: var(--blurple); }
+}
+
+/* ---------- Respect "reduce motion" ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

@@ -5,6 +5,7 @@
 
 import express from 'express';
 import fs from 'node:fs';
+import http from 'node:http';
 import path from 'node:path';
 import { createApp } from './app';
 import { openDb } from './db';
@@ -18,32 +19,29 @@ const clientDir = path.join(import.meta.dirname, '..', 'client');
 // Fake dev users need BOTH the --dev flag and DEV_FAKE_USER=1, so production can't enable them by accident.
 const allowDevUsers = dev && process.env.DEV_FAKE_USER === '1';
 if (allowDevUsers) console.warn('⚠ DEV_FAKE_USER is on: anyone can sign in as any fake user. Never use this in production.');
+if (!process.env.DISCORD_CLIENT_ID || !process.env.DISCORD_CLIENT_SECRET) {
+  console.warn('⚠ DISCORD_CLIENT_ID / DISCORD_CLIENT_SECRET missing from .env: Discord sign-in will fail.');
+}
 
 const app = createApp({ db: openDb(), allowDevUsers });
+const server = http.createServer(app);
 
 if (dev) {
   const { createServer } = await import('vite');
-  const root = path.join(clientDir, '..');
   const vite = await createServer({
-    root: clientDir,
+    root: clientDir, // settings in client/vite.config.ts are picked up from here
     appType: 'spa',
-    server: {
-      middlewareMode: true,
-      // Only let the browser load files it needs. Without this, Vite would
-      // serve /puzzles (the answers!) and /server through its /@fs/ route.
-      fs: { allow: [clientDir, path.join(root, 'shared'), path.join(root, 'node_modules')] },
-    },
+    // Run hot reload over the same port as everything else, so it also works
+    // through the tunnel and Discord's proxy (which only forward this one port).
+    server: { middlewareMode: true, ws: { server } },
   });
   app.use(vite.middlewares);
 } else {
   app.use(express.static(path.join(clientDir, 'dist')));
 }
 
-// Express 5 hands listen errors (like "port already in use") to this callback instead of crashing.
-app.listen(port, (err) => {
-  if (err) {
-    console.error(`Could not start on port ${port}: ${err.message}. Is another server (npm run dev?) already running?`);
-    process.exit(1);
-  }
-  console.log(`Mini Crossword on http://localhost:${port}${dev ? ' (dev)' : ''}`);
+server.on('error', (err) => {
+  console.error(`Could not start on port ${port}: ${err.message}. Is another server (npm run dev?) already running?`);
+  process.exit(1);
 });
+server.listen(port, () => console.log(`Mini Crossword on http://localhost:${port}${dev ? ' (dev)' : ''}`));

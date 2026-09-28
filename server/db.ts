@@ -1,7 +1,7 @@
 // SQLite storage for daily attempts: one row per player per UTC day.
 
 import Database from 'better-sqlite3';
-import type { AttemptStatus } from '../shared/types';
+import type { AttemptStatus, User } from '../shared/types';
 
 export type DB = Database.Database;
 
@@ -21,9 +21,14 @@ export function openDb(file = process.env.DB_FILE || 'crossword.db'): DB {
       assisted   INTEGER NOT NULL DEFAULT 0,   -- 1 once check or reveal was used
       PRIMARY KEY (user_id, day)               -- the database itself enforces one attempt per day
     );
+
+    -- Names and avatars for the leaderboard, refreshed each time a player opens the game.
+    CREATE TABLE IF NOT EXISTS users (
+      id       TEXT PRIMARY KEY,
+      username TEXT NOT NULL,
+      avatar   TEXT
+    );
   `);
-  // ponytail: this table is only for the free daily puzzle (leaderboards, streaks).
-  // A future paid archive should get its own table so it can never touch these.
   return db;
 }
 
@@ -88,4 +93,43 @@ export function saveAttempt(db: DB, a: Attempt): boolean {
     )
     .run(JSON.stringify(a.letters), JSON.stringify(a.revealed), a.endedAt, a.status, a.assisted ? 1 : 0, a.userId, a.day);
   return result.changes === 1;
+}
+
+export function upsertUser(db: DB, u: User) {
+  db.prepare(
+    `INSERT INTO users (id, username, avatar) VALUES (?, ?, ?)
+     ON CONFLICT (id) DO UPDATE SET username = excluded.username, avatar = excluded.avatar`,
+  ).run(u.id, u.username, u.avatar);
+}
+
+export interface FinishedRow {
+  user_id: string;
+  username: string;
+  avatar: string | null;
+  status: 'solved' | 'gaveup';
+  assisted: number;
+  time_ms: number;
+}
+
+/**
+ * Everyone who has finished a day's puzzle, already in leaderboard order:
+ * unassisted solves by time, then assisted solves by time, then give-ups.
+ * Players still playing are never included. Only names and results: no letters.
+ */
+export function finishedAttempts(db: DB, day: string): FinishedRow[] {
+  // ponytail: returns every finisher; add LIMIT + "your rank" query if a day ever has thousands of players
+  return db
+    .prepare(
+      `SELECT a.user_id, u.username, u.avatar, a.status, a.assisted, a.ended_at - a.started_at AS time_ms
+       FROM daily_attempts a JOIN users u ON u.id = a.user_id
+       WHERE a.day = ? AND a.status != 'playing'
+       ORDER BY a.status = 'gaveup', a.assisted, time_ms, a.ended_at`,
+    )
+    .all(day) as FinishedRow[];
+}
+
+/** The days a player solved (for streaks). */
+export function solvedDays(db: DB, userId: string): string[] {
+  const rows = db.prepare(`SELECT day FROM daily_attempts WHERE user_id = ? AND status = 'solved'`).all(userId) as { day: string }[];
+  return rows.map((r) => r.day);
 }

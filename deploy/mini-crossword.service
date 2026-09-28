@@ -1,0 +1,17 @@
+# systemd service: keeps Mini Crossword running, and restarts it after a crash or a reboot.
+# Installed by step 6 of deploy/GOOGLE-CLOUD.md, which replaces USERNAME with your VM user.
+[Unit]
+Description=Mini Crossword (Discord Activity)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=USERNAME
+WorkingDirectory=/home/USERNAME/mini-crossword
+ExecStart=/usr/bin/npm start
+Restart=always
+RestartSec=3
+Environment=PORT=3000
+
+[Install]
+WantedBy=multi-user.target

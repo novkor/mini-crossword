@@ -21,6 +21,13 @@ export interface PuzzleFile {
   author: string;
 }
 
+/** A signed-in player. */
+export interface User {
+  id: string; // Discord user ID
+  username: string; // display name (Discord global_name, or the username)
+  avatar: string | null; // Discord avatar hash; null = default avatar
+}
+
 export type AttemptStatus = 'playing' | 'solved' | 'gaveup';
 
 /** A player's attempt at today's puzzle, as the server reports it. */
@@ -31,6 +38,22 @@ export interface AttemptState {
   assisted: boolean; // used check or reveal
   elapsedMs: number; // measured by the server; frozen once the attempt ends
   solution?: string[]; // ONLY present once the attempt has ended
+}
+
+/** One row on today's leaderboard. Never contains anyone's letters. */
+export interface LeaderboardEntry {
+  rank: number | null; // null for players who gave up
+  user: User;
+  status: 'solved' | 'gaveup';
+  assisted: boolean;
+  timeMs: number | null; // null for players who gave up
+  isMe: boolean;
+}
+
+export interface Leaderboard {
+  puzzleId: number;
+  entries: LeaderboardEntry[];
+  streak: number; // the requesting player's current streak of solved days
 }
 
 /** What the client is allowed to see before finishing: the shape and the clues, never the letters. */

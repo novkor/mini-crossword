@@ -1,13 +1,15 @@
 // Talks to our server. The answers and the timer live only on the server: we
 // send letters, it replies with right/wrong and the state of our attempt.
 
-import type { AttemptState, PuzzleView } from '../../shared/types';
+import type { AttemptState, Leaderboard, PuzzleView, User } from '../../shared/types';
+import type { Session } from './discord';
 
 let puzzleId = 0; // sent with every request so the server can spot a midnight rollover
+let auth: Record<string, string> = {}; // the header that proves who we are
 
-// DEV ONLY: in a normal browser tab, play as a fake user: http://localhost:3000/?user=alice
-// (The server ignores this unless it runs with --dev and DEV_FAKE_USER=1. Phase 4 adds Discord sign-in.)
-const devUser = new URLSearchParams(location.search).get('user') ?? 'player1';
+export function setSession(s: Session) {
+  auth = 'token' in s ? { Authorization: `Bearer ${s.token}` } : { 'X-Dev-User': s.devUser };
+}
 
 /** Thrown when the server answers with an error. `data.attempt` is set when we've already finished. */
 export class ApiError extends Error {
@@ -19,7 +21,7 @@ export class ApiError extends Error {
 async function call<T>(path: string, body?: object): Promise<T> {
   const res = await fetch(`/api${path}`, {
     method: body ? 'POST' : 'GET',
-    headers: { 'X-Dev-User': devUser, ...(body && { 'Content-Type': 'application/json' }) },
+    headers: { ...auth, ...(body && { 'Content-Type': 'application/json' }) },
     body: body && JSON.stringify({ puzzleId, ...body }),
   });
   const data = await res.json().catch(() => ({}));
@@ -31,7 +33,7 @@ type WithAttempt<T = {}> = T & { attempt: AttemptState };
 
 /** Today's puzzle plus our attempt. The first load of the day starts the (server-side) timer. */
 export async function loadPuzzle() {
-  const res = await call<WithAttempt<{ puzzle: PuzzleView }>>('/puzzle');
+  const res = await call<WithAttempt<{ me: User; puzzle: PuzzleView }>>('/puzzle');
   puzzleId = res.puzzle.id;
   return res;
 }
@@ -46,3 +48,6 @@ export const reveal = (cell: number) => call<WithAttempt<{ letter: string }>>('/
 
 /** Ends the attempt; the reply includes the solution. */
 export const giveUp = () => call<WithAttempt>('/give-up', {});
+
+/** Today's results. The server answers 403 until our own attempt has ended. */
+export const leaderboard = () => call<Leaderboard>('/leaderboard');

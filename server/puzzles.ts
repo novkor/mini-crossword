@@ -68,8 +68,6 @@ export function loadPuzzles(dir = PUZZLE_DIR): PuzzleFile[] {
 /**
  * The puzzle for a given UTC day: the one dated that day, or else a rerun.
  * Reruns cycle through PAST puzzles only, so a missing day never spoils a future puzzle.
- * (Keep all rerun logic here: if a paid past-puzzle archive is added later,
- * this is where to make sure archive buyers can't get a head start on a rerun.)
  */
 export function pickPuzzle(puzzles: PuzzleFile[], day: string): PuzzleFile {
   const exact = puzzles.find((p) => p.date === day);
