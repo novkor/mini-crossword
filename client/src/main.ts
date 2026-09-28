@@ -67,8 +67,16 @@ function loading(text: string) {
   $('loader-text').textContent = text;
 }
 
+// If loading hangs (server or tunnel down), don't leave the player watching the loader forever.
+const slowLoad = setTimeout(() => {
+  loading('This is taking longer than usual…');
+  $('loader-retry').hidden = false;
+}, 12_000);
+$('loader-retry').addEventListener('click', () => location.reload());
+
 /** Fade the loading screen out and show the game underneath. */
 function hideLoader() {
+  clearTimeout(slowLoad);
   document.body.classList.remove('loading');
   $('loader').classList.add('done');
   setTimeout(() => $('loader').remove(), 300);

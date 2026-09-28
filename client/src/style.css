@@ -458,24 +458,37 @@ body.loading > :not(.loader) { visibility: hidden; } /* no half-empty frame whil
   justify-items: center;
   gap: 4px;
   background: var(--bg);
-  transition: opacity 0.25s var(--ease);
+  transition: opacity 0.2s ease-in; /* exits a bit faster than things enter */
 }
 .loader.done { opacity: 0; pointer-events: none; }
+/* The background covers the page at once, but the grid and text only fade in
+   after 300ms, so fast loads never flash a loading indicator. */
+.loader > * { animation: loader-in 0.25s ease-out 0.3s both; }
+@keyframes loader-in { from { opacity: 0; transform: translateY(4px); } }
 .loader p { margin: 0; }
 .loader-title { font-size: 18px; font-weight: 800; margin-top: 14px !important; }
+#loader-retry { margin-top: 16px; }
 .loader-grid { display: grid; grid-template-columns: repeat(3, 24px); gap: 4px; }
 .loader-grid span {
+  position: relative;
   aspect-ratio: 1;
   border-radius: 5px;
   background: var(--cell);
   box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.18);
-  animation: loader-wave 1.4s var(--ease) calc(var(--i) * 0.12s) infinite;
 }
-.loader-grid span.black { background: transparent; box-shadow: none; animation: none; }
-@keyframes loader-wave {
-  0%, 60%, 100% { background: var(--cell); }
-  25% { background: var(--blurple); }
+/* the wave: a blurple layer fading in and out (opacity is cheap to animate, colours aren't) */
+.loader-grid span::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--blurple);
+  opacity: 0;
+  animation: loader-wave 1.4s ease-in-out calc(var(--i) * 0.12s) infinite;
 }
+.loader-grid span.black { background: transparent; box-shadow: none; }
+.loader-grid span.black::after { display: none; }
+@keyframes loader-wave { 25% { opacity: 1; } 60%, 100% { opacity: 0; } }
 
 /* ---------- Respect "reduce motion" ---------- */
 @media (prefers-reduced-motion: reduce) {
