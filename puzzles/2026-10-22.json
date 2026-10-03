@@ -1,0 +1,29 @@
+{
+  "id": 27,
+  "date": "2026-10-22",
+  "size": 5,
+  "grid": [
+    "##TWO",
+    "#DIED",
+    "FAMED",
+    "ERIK#",
+    "END##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Number of people in Erik's dream relationship",
+      "4": "What Erik's champion did, again",
+      "5": "Well-known",
+      "6": "Pécs's least eligible bachelor",
+      "7": "Finish"
+    },
+    "down": {
+      "1": "Shy, like Erik at the Pécs city limits",
+      "2": "Seven days",
+      "3": "Strange",
+      "4": "Mend, as socks",
+      "5": "Charge"
+    }
+  },
+  "author": "Claude"
+}

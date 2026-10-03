@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { PuzzleFile } from '../shared/types';
-import { loadPuzzles, pickPuzzle, validatePuzzle } from './puzzles';
+import { loadPuzzles, pickPuzzle, puzzleFiles, validatePuzzle } from './puzzles';
 
 const puzzles = loadPuzzles();
 const P1 = puzzles[0]; // #DARE / RELAY / ABOVE / TUNES / EGGS#
@@ -8,8 +8,11 @@ const clone = (p: PuzzleFile): PuzzleFile => JSON.parse(JSON.stringify(p));
 
 describe('validator', () => {
   it('accepts all shipped puzzles', () => {
-    expect(puzzles).toHaveLength(7);
+    // every file in /puzzles loads (loadPuzzles skips invalid ones), and numbers run 1, 2, 3... by date
+    expect(puzzles).toHaveLength(puzzleFiles().length);
     for (const p of puzzles) expect(validatePuzzle(p)).toEqual([]);
+    const byDate = [...puzzles].sort((a, b) => a.date.localeCompare(b.date));
+    expect(byDate.map((p) => p.id)).toEqual(byDate.map((_, i) => i + 1));
   });
 
   it('rejects a grid that is not square', () => {
@@ -37,6 +40,12 @@ describe('validator', () => {
     const p = clone(P1);
     p.grid = ['A#AAA', '##AAA', 'AAAAA', 'AAAAA', 'AAAAA'];
     expect(validatePuzzle(p).join()).toMatch(/row 1, column 1 is not part of any word/);
+  });
+
+  it('rejects clues that are still TODO (from npm run new-puzzle)', () => {
+    const p = clone(P1);
+    p.clues.across['5'] = 'TODO';
+    expect(validatePuzzle(p).join()).toMatch(/5-across is still TODO/);
   });
 
   it('checks the file name matches the date', () => {

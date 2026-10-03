@@ -7,7 +7,7 @@ import { streak } from '../shared/format';
 import type { AttemptState, Leaderboard, LeaderboardEntry, PuzzleFile } from '../shared/types';
 import { exchangeCode, requireUser, verifyDiscordToken, type VerifyToken } from './auth';
 import {
-  finishedAttempts, getAttempt, saveAttempt, solvedDays, startAttempt, upsertUser, type Attempt, type DB,
+  deleteAttempt, finishedAttempts, getAttempt, saveAttempt, solvedDays, startAttempt, upsertUser, type Attempt, type DB,
 } from './db';
 import { puzzleForDay, utcDay } from './puzzles';
 
@@ -102,6 +102,10 @@ export function createApp({
     const day = today();
     const puzzle = puzzleFor(day);
     upsertUser(db, req.user!); // keep the leaderboard name and avatar current
+    // If today's puzzle was swapped during the day (a puzzle file added for a day that
+    // was showing a rerun), an attempt at the old puzzle no longer applies: start fresh.
+    const old = getAttempt(db, req.user!.id, day);
+    if (old && old.puzzleId !== puzzle.id) deleteAttempt(db, req.user!.id, day);
     const attempt = startAttempt(db, req.user!.id, day, puzzle.id, puzzle.size ** 2, now());
     res.json({ me: req.user, puzzle: toView(puzzle), attempt: stateOf(attempt, puzzle) });
   });
@@ -166,7 +170,7 @@ export function createApp({
       return void res.status(403).json({ error: "Finish today's puzzle to see the leaderboard." });
     }
     let rank = 0;
-    const entries: LeaderboardEntry[] = finishedAttempts(db, day).map((r) => ({
+    const entries: LeaderboardEntry[] = finishedAttempts(db, day, mine.puzzleId).map((r) => ({
       rank: r.status === 'solved' ? ++rank : null,
       user: { id: r.user_id, username: r.username, avatar: r.avatar },
       status: r.status,

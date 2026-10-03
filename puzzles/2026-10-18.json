@@ -1,0 +1,37 @@
+{
+  "id": 23,
+  "date": "2026-10-18",
+  "size": 7,
+  "grid": [
+    "#LANE##",
+    "#ERODES",
+    "MARTIAL",
+    "ODE#FRO",
+    "VESTING",
+    "ENTICE#",
+    "##SEER#"
+  ],
+  "clues": {
+    "across": {
+      "1": "Top, mid or bot",
+      "5": "Wears away",
+      "8": "___ arts",
+      "9": "Poem of praise",
+      "10": "To and ___",
+      "11": "Granting, as power or rights",
+      "13": "Tempt",
+      "14": "Fortune teller"
+    },
+    "down": {
+      "1": "Heavy and dull",
+      "2": "Police actions",
+      "3": "Negative word",
+      "4": "Large, grand building",
+      "6": "Breadwinner",
+      "7": "Long, tiring trudge",
+      "8": "Relocate (something Erik will never do from Pécs)",
+      "12": "Draw, in a match"
+    }
+  },
+  "author": "Claude"
+}

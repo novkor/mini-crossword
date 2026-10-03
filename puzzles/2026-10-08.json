@@ -1,0 +1,29 @@
+{
+  "id": 13,
+  "date": "2026-10-08",
+  "size": 5,
+  "grid": [
+    "##BRA",
+    "#ARAM",
+    "SHARP",
+    "POKE#",
+    "AYE##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Garment Erik has never had to figure out",
+      "4": "The only mode Erik plays, and still loses",
+      "5": "Keen-edged",
+      "6": "Long-range harass before the fight starts",
+      "7": "Sailor's \"yes\""
+    },
+    "down": {
+      "1": "Pedal Erik never touches, since someone else always drives",
+      "2": "Like an Erik victory",
+      "3": "Guitarist's speaker",
+      "4": "Pirate's hello",
+      "5": "Place for a massage"
+    }
+  },
+  "author": "Claude"
+}

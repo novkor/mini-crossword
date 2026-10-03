@@ -1,0 +1,29 @@
+{
+  "id": 10,
+  "date": "2026-10-05",
+  "size": 5,
+  "grid": [
+    "##MID",
+    "#REDO",
+    "GIRLS",
+    "EDGE#",
+    "TEE##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Where the mages go, for short",
+      "4": "Do-over",
+      "5": "Those who never text Erik back",
+      "6": "Rim",
+      "7": "Golfer's peg"
+    },
+    "down": {
+      "1": "Combine, as lanes",
+      "2": "Doing nothing, like Erik on a Saturday",
+      "3": "Haircuts, informally",
+      "4": "What Erik needs before going anywhere",
+      "5": "Understand"
+    }
+  },
+  "author": "Claude"
+}

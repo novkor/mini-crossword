@@ -1,0 +1,29 @@
+{
+  "id": 11,
+  "date": "2026-10-06",
+  "size": 5,
+  "grid": [
+    "USE##",
+    "LARD#",
+    "TIRES",
+    "#DEEP",
+    "##DRY"
+  ],
+  "clues": {
+    "across": {
+      "1": "Make ___ of",
+      "4": "Pig fat for baking",
+      "6": "Gets sleepy",
+      "8": "Like the end of the pool to dive into",
+      "9": "Not wet"
+    },
+    "down": {
+      "1": "R ability, informally",
+      "2": "Spoke",
+      "3": "Made a mistake",
+      "5": "Doe or buck",
+      "7": "Secret agent"
+    }
+  },
+  "author": "Claude"
+}

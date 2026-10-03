@@ -1,0 +1,29 @@
+{
+  "id": 14,
+  "date": "2026-10-09",
+  "size": 5,
+  "grid": [
+    "#MASS",
+    "MACHO",
+    "INHIB",
+    "TIERS",
+    "TASK#"
+  ],
+  "clues": {
+    "across": {
+      "1": "Weight, in physics",
+      "5": "Overly manly",
+      "6": "Short name for the building that spawns super minions",
+      "7": "Wedding cake layers",
+      "8": "Chore"
+    },
+    "down": {
+      "1": "Craze",
+      "2": "Sore muscles have them",
+      "3": "Avoid, as a duty",
+      "4": "Cries loudly",
+      "5": "Baseball glove"
+    }
+  },
+  "author": "Claude"
+}

@@ -1,0 +1,29 @@
+{
+  "id": 18,
+  "date": "2026-10-13",
+  "size": 5,
+  "grid": [
+    "ACT##",
+    "SLIM#",
+    "SODAS",
+    "#GANK",
+    "##LAY"
+  ],
+  "clues": {
+    "across": {
+      "1": "Part of a play",
+      "4": "Thin",
+      "6": "Fizzy drinks",
+      "8": "Jungler's surprise visit to your lane",
+      "9": "Put down gently"
+    },
+    "down": {
+      "1": "What Erik needs someone to drive everywhere",
+      "2": "Block, as a drain",
+      "3": "Like ocean waves",
+      "5": "Blue bar most mages run out of",
+      "7": "Where clouds float"
+    }
+  },
+  "author": "Claude"
+}

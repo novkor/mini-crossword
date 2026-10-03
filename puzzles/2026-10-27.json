@@ -1,0 +1,29 @@
+{
+  "id": 32,
+  "date": "2026-10-27",
+  "size": 5,
+  "grid": [
+    "#IRE#",
+    "URINE",
+    "PASTE",
+    "STEEL",
+    "#ERR#"
+  ],
+  "clues": {
+    "across": {
+      "1": "Anger",
+      "4": "What a litter box soaks up (thanks, Erik's cat)",
+      "6": "Glue",
+      "7": "Heart of ___ (stacking tank item)",
+      "8": "Make a mistake"
+    },
+    "down": {
+      "1": "Very angry, like Erik after a last-second swap",
+      "2": "Early ___",
+      "3": "Come in",
+      "4": "___ and downs",
+      "5": "Slippery fish"
+    }
+  },
+  "author": "Claude"
+}

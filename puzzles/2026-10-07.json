@@ -1,0 +1,29 @@
+{
+  "id": 12,
+  "date": "2026-10-07",
+  "size": 5,
+  "grid": [
+    "#SET#",
+    "WHERE",
+    "ARROW",
+    "GUILE",
+    "#GEL#"
+  ],
+  "clues": {
+    "across": {
+      "1": "Put down",
+      "4": "\"___ is Erik?\" \"Pécs, obviously\"",
+      "6": "Thing shot from a bow",
+      "7": "Cunning",
+      "8": "Hair goop"
+    },
+    "down": {
+      "1": "\"I dunno\" gesture",
+      "2": "Spooky",
+      "3": "What lives under the bridge, or in Erik's lane",
+      "4": "What a happy dog's tail does",
+      "5": "Female sheep"
+    }
+  },
+  "author": "Claude"
+}

@@ -1,0 +1,37 @@
+{
+  "id": 30,
+  "date": "2026-10-25",
+  "size": 7,
+  "grid": [
+    "##SOP##",
+    "#BLURB#",
+    "ORATORY",
+    "RUN#DUE",
+    "ENTRUST",
+    "#TEACH#",
+    "##DYE##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Bribe",
+      "4": "Back-cover text",
+      "6": "Public speaking skill",
+      "8": "Jog",
+      "9": "Owed",
+      "10": "Hand over for safekeeping (never a stew to Erik)",
+      "12": "Instruct",
+      "13": "Hair colour"
+    },
+    "down": {
+      "1": "Tilted",
+      "2": "Not in",
+      "3": "Fruit and vegetables",
+      "4": "Main impact",
+      "5": "Tall grass to hide in",
+      "6": "Mined rock",
+      "7": "So far",
+      "11": "Beam of light"
+    }
+  },
+  "author": "Claude"
+}

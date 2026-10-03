@@ -1,0 +1,29 @@
+{
+  "id": 25,
+  "date": "2026-10-20",
+  "size": 5,
+  "grid": [
+    "#GASP",
+    "FANCY",
+    "LUNAR",
+    "AGILE",
+    "WEEP#"
+  ],
+  "clues": {
+    "across": {
+      "1": "Shocked intake of breath",
+      "5": "Elaborate",
+      "6": "Of the moon",
+      "7": "Nimble",
+      "8": "Cry"
+    },
+    "down": {
+      "1": "Fuel meter",
+      "2": "Little girl with a big bear named Tibbers",
+      "3": "Where hair grows (for now, Erik)",
+      "4": "Funeral fire",
+      "5": "Defect"
+    }
+  },
+  "author": "Claude"
+}

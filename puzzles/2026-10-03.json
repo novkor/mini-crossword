@@ -1,0 +1,29 @@
+{
+  "id": 8,
+  "date": "2026-10-03",
+  "size": 5,
+  "grid": [
+    "##ELO",
+    "#PROW",
+    "ALONE",
+    "CODE#",
+    "EYE##"
+  ],
+  "clues": {
+    "across": {
+      "1": "___ hell (where every bad player blames the others)",
+      "4": "Front of a ship",
+      "5": "Erik and his cat, minus the cat",
+      "6": "Secret message system",
+      "7": "What Erik rolls when his frontline swaps at the last second"
+    },
+    "down": {
+      "1": "Wear away, like Erik's patience in ARAM",
+      "2": "Solitary, like a certain cat owner in Pécs",
+      "3": "What Erik does to everyone who drives him around",
+      "4": "Cunning tactic",
+      "5": "Card that beats a king"
+    }
+  },
+  "author": "Claude"
+}

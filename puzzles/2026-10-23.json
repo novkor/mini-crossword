@@ -1,0 +1,29 @@
+{
+  "id": 28,
+  "date": "2026-10-23",
+  "size": 5,
+  "grid": [
+    "##RUM",
+    "#FUSE",
+    "OLDEN",
+    "FEED#",
+    "FAR##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Pirate's drink",
+      "4": "Firecracker part",
+      "5": "Of long ago",
+      "6": "What Erik does every ARAM, generously",
+      "7": "Distant"
+    },
+    "down": {
+      "1": "Less polite",
+      "2": "Second-hand",
+      "3": "Guys",
+      "4": "Tiny jumper on a cat",
+      "5": "Not on"
+    }
+  },
+  "author": "Claude"
+}

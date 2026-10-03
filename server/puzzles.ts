@@ -40,7 +40,9 @@ export function validatePuzzle(p: PuzzleFile, fileName?: string): string[] {
     const expected = layout.words.filter((w) => w.dir === dir).map((w) => String(w.number));
     const actual = Object.keys(p.clues?.[dir] ?? {});
     for (const n of expected) {
-      if (!p.clues?.[dir]?.[n]?.trim()) errors.push(`missing clue for ${n}-${dir}`);
+      const clue = p.clues?.[dir]?.[n]?.trim();
+      if (!clue) errors.push(`missing clue for ${n}-${dir}`);
+      else if (/^TODO\b/i.test(clue)) errors.push(`clue for ${n}-${dir} is still TODO`);
     }
     for (const n of actual) {
       if (!expected.includes(n)) errors.push(`extra clue ${n}-${dir}: there is no such word in the grid`);
@@ -49,10 +51,15 @@ export function validatePuzzle(p: PuzzleFile, fileName?: string): string[] {
   return errors;
 }
 
+/** The puzzle file names in /puzzles. Files starting with "_" (like _themes.json) aren't puzzles. */
+export function puzzleFiles(dir = PUZZLE_DIR): string[] {
+  return fs.readdirSync(dir).filter((f) => f.endsWith('.json') && !f.startsWith('_')).sort();
+}
+
 /** Read and validate every puzzle file. Invalid files are skipped (and reported) so one typo can't take the game down. */
 export function loadPuzzles(dir = PUZZLE_DIR): PuzzleFile[] {
   const puzzles: PuzzleFile[] = [];
-  for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
+  for (const file of puzzleFiles(dir)) {
     try {
       const p = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as PuzzleFile;
       const errors = validatePuzzle(p, file);

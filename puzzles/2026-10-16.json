@@ -1,0 +1,29 @@
+{
+  "id": 21,
+  "date": "2026-10-16",
+  "size": 5,
+  "grid": [
+    "ASHE#",
+    "HAUNT",
+    "RINSE",
+    "INCUR",
+    "#THEM"
+  ],
+  "clues": {
+    "across": {
+      "1": "Frost archer with a crystal arrow ult",
+      "5": "Ghost's favourite hangout",
+      "7": "Wash with water",
+      "8": "Bring upon oneself",
+      "9": "Those people"
+    },
+    "down": {
+      "1": "Nine-tailed fox mage",
+      "2": "Holy person",
+      "3": "Gut feeling",
+      "4": "Follow as a result",
+      "6": "Semester"
+    }
+  },
+  "author": "Claude"
+}

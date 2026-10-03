@@ -1,0 +1,37 @@
+{
+  "id": 16,
+  "date": "2026-10-11",
+  "size": 7,
+  "grid": [
+    "##CAB##",
+    "#BARON#",
+    "SERENER",
+    "HAT#FRY",
+    "EMOTIVE",
+    "#SNORE#",
+    "##SEE##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Yellow car for hire",
+      "4": "Purple pit boss worth throwing a game for",
+      "6": "More tranquil",
+      "8": "Beanie, for one",
+      "9": "Cook in hot oil",
+      "10": "Stirring strong feelings",
+      "12": "The soundtrack of Erik's late-night voice calls",
+      "13": "Notice"
+    },
+    "down": {
+      "1": "Milk containers",
+      "2": "\"You ___ here\" (map label)",
+      "3": "Big outdoor blaze, or Erik's kitchen on a bad day",
+      "4": "Smiles widely",
+      "5": "Courage, like what Erik needs to leave Pécs",
+      "6": "Pronoun for Erik's cat, maybe",
+      "7": "Bread grain",
+      "11": "This little piggy"
+    }
+  },
+  "author": "Claude"
+}

@@ -1,0 +1,29 @@
+{
+  "id": 34,
+  "date": "2026-10-29",
+  "size": 5,
+  "grid": [
+    "BURP#",
+    "ASHES",
+    "SHINE",
+    "HENCE",
+    "#ROES"
+  ],
+  "clues": {
+    "across": {
+      "1": "Erik's way of saying 'thanks for dinner'",
+      "5": "Fireplace remains",
+      "7": "Gleam",
+      "8": "Therefore",
+      "9": "Fish eggs"
+    },
+    "down": {
+      "1": "Party",
+      "2": "Theatre guide",
+      "3": "Horned beast",
+      "4": "British coins",
+      "6": "Notices"
+    }
+  },
+  "author": "Claude"
+}

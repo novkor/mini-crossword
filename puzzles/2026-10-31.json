@@ -1,0 +1,29 @@
+{
+  "id": 36,
+  "date": "2026-10-31",
+  "size": 5,
+  "grid": [
+    "##WAY",
+    "#DICE",
+    "OATHS",
+    "VICE#",
+    "ASH##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Path",
+      "4": "Cubes for board games",
+      "5": "Promises",
+      "6": "Bad habit",
+      "7": "Fireplace residue"
+    },
+    "down": {
+      "1": "Broom rider",
+      "2": "Throb",
+      "3": "Not no",
+      "4": "Raised platform",
+      "5": "Egg cells"
+    }
+  },
+  "author": "Claude"
+}

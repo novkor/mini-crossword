@@ -36,7 +36,7 @@ async function start(allowDevUsers = true) {
   const app = createApp({
     db: openDb(':memory:'),
     now: () => t,
-    puzzleFor: (day) => (day === '2026-09-26' ? P2 : P1),
+    puzzleFor: (day) => (day === '2026-09-26' ? P2 : firstDay),
     allowDevUsers,
     verifyToken: fakeDiscord,
   });
@@ -45,7 +45,9 @@ async function start(allowDevUsers = true) {
   base = `http://localhost:${(server.address() as AddressInfo).port}/api`;
 }
 
+let firstDay = P1; // the puzzle for 25 Sep; a test swaps it to simulate a puzzle added mid-day
 beforeEach(async () => {
+  firstDay = P1;
   t = Date.parse('2026-09-25T12:00:00Z');
   await start();
 });
@@ -316,6 +318,30 @@ describe('leaderboard', () => {
     expect((await alice.get('/puzzle')).puzzle.id).toBe(P2.id);
     await alice.raw('/save', { puzzleId: P2.id, letters: solutionOf(P2) });
     expect((await alice.get('/leaderboard')).streak).toBe(2);
+  });
+});
+
+describe("swapping a day's puzzle mid-day", () => {
+  it('gives everyone a fresh attempt at the new puzzle, and the leaderboard ignores the old one', async () => {
+    const alice = as('alice');
+    await alice.get('/puzzle');
+    await alice.post('/save', { letters: SOLUTION }); // solved the old puzzle (#1)
+
+    firstDay = { ...P2, id: 99 }; // a new puzzle file appears for today
+    const res = await alice.get('/puzzle');
+    expect(res.puzzle.id).toBe(99);
+    expect(res.attempt).toMatchObject({ status: 'playing', letters: empty() });
+    expect(res.attempt).not.toHaveProperty('solution');
+
+    // a still-open tab on the old puzzle is told to reload
+    expect((await alice.raw('/save', { puzzleId: 1, letters: empty() })).status).toBe(409);
+
+    // bob solves the new one: the leaderboard only shows the new puzzle's results
+    const bob = as('bob');
+    await bob.get('/puzzle');
+    await bob.raw('/save', { puzzleId: 99, letters: solutionOf(P2) });
+    const board = await bob.get('/leaderboard');
+    expect(board.entries.map((e: any) => e.user.username)).toEqual(['bob']);
   });
 });
 

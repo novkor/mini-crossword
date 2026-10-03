@@ -1,0 +1,29 @@
+{
+  "id": 20,
+  "date": "2026-10-15",
+  "size": 5,
+  "grid": [
+    "##QUA",
+    "#BURN",
+    "BRAND",
+    "OAKS#",
+    "ONE##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Sine ___ non (essential condition)",
+      "4": "What Erik does to stew",
+      "5": "Erik's fire mage main, also his cooking style",
+      "6": "Acorn trees",
+      "7": "Single number, like Erik's relationship count"
+    },
+    "down": {
+      "1": "Earth tremor",
+      "2": "Large vases",
+      "3": "Plus",
+      "4": "Cereal fibre",
+      "5": "Jeer"
+    }
+  },
+  "author": "Claude"
+}

@@ -2,13 +2,13 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { PUZZLE_DIR, validatePuzzle } from '../server/puzzles';
+import { PUZZLE_DIR, puzzleFiles, validatePuzzle } from '../server/puzzles';
 import type { PuzzleFile } from '../shared/types';
 
 let failed = false;
 const seenIds = new Map<number, string>();
 
-for (const file of fs.readdirSync(PUZZLE_DIR).filter((f) => f.endsWith('.json')).sort()) {
+for (const file of puzzleFiles()) {
   let errors: string[];
   try {
     const p = JSON.parse(fs.readFileSync(path.join(PUZZLE_DIR, file), 'utf8')) as PuzzleFile;

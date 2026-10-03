@@ -1,0 +1,29 @@
+{
+  "id": 22,
+  "date": "2026-10-17",
+  "size": 5,
+  "grid": [
+    "##BUM",
+    "#MUSE",
+    "BERET",
+    "INNS#",
+    "NUT##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Behind, in British slang",
+      "4": "Source of inspiration",
+      "5": "French cap",
+      "6": "Roadside hotels",
+      "7": "Squirrel's snack"
+    },
+    "down": {
+      "1": "State of the stew after Erik watched it",
+      "2": "Applications",
+      "3": "Encountered",
+      "4": "Restaurant list",
+      "5": "Trash can"
+    }
+  },
+  "author": "Claude"
+}

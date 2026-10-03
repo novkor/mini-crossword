@@ -1,0 +1,29 @@
+{
+  "id": 24,
+  "date": "2026-10-19",
+  "size": 5,
+  "grid": [
+    "##ZOO",
+    "#SONA",
+    "CLOCK",
+    "HOME#",
+    "ITS##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Animal park",
+      "4": "Silent support with a magical instrument",
+      "5": "Timekeeper on the wall",
+      "6": "Where Erik is, always",
+      "7": "Belonging to it"
+    },
+    "down": {
+      "1": "Speeds",
+      "2": "One time",
+      "3": "Acorn tree",
+      "4": "Coin opening",
+      "5": "Greek letter that looks like an X"
+    }
+  },
+  "author": "Claude"
+}

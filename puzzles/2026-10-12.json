@@ -1,0 +1,29 @@
+{
+  "id": 17,
+  "date": "2026-10-12",
+  "size": 5,
+  "grid": [
+    "##INK",
+    "#KNEE",
+    "WITTY",
+    "AWES#",
+    "SIR##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Tattoo fluid",
+      "4": "Leg joint",
+      "5": "Clever and funny (unlike Erik's jokes)",
+      "6": "Amazes",
+      "7": "Knight's title"
+    },
+    "down": {
+      "1": "Erik's real role in every ARAM",
+      "2": "Fishing gear",
+      "3": "Lock opener",
+      "4": "Fuzzy green fruit",
+      "5": "Used to be"
+    }
+  },
+  "author": "Claude"
+}

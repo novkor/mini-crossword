@@ -1,0 +1,29 @@
+{
+  "id": 33,
+  "date": "2026-10-28",
+  "size": 5,
+  "grid": [
+    "##LAG",
+    "#TOGA",
+    "OASES",
+    "AXES#",
+    "FIR##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Online delay Erik blames for every death",
+      "4": "Roman robe",
+      "5": "Desert springs",
+      "6": "Chopping tools",
+      "7": "Christmas tree"
+    },
+    "down": {
+      "1": "The word on Erik's trophy shelf",
+      "2": "A very long time",
+      "3": "Fuel",
+      "4": "Erik's only way out of Pécs",
+      "5": "Clumsy person"
+    }
+  },
+  "author": "Claude"
+}

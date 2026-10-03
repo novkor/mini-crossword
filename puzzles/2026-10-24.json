@@ -1,0 +1,29 @@
+{
+  "id": 29,
+  "date": "2026-10-24",
+  "size": 5,
+  "grid": [
+    "#NOOB",
+    "SALVE",
+    "WIDEN",
+    "AVERT",
+    "PERT#"
+  ],
+  "clues": {
+    "across": {
+      "1": "What Erik is, no matter how many hours he puts in",
+      "5": "Soothing ointment",
+      "6": "Make broader",
+      "7": "Prevent",
+      "8": "Cheeky"
+    },
+    "down": {
+      "1": "Innocent",
+      "2": "More aged",
+      "3": "Out in the open",
+      "4": "Not straight",
+      "5": "Champion ___ Erik never sees coming in ARAM"
+    }
+  },
+  "author": "Claude"
+}

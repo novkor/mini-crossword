@@ -1,0 +1,29 @@
+{
+  "id": 26,
+  "date": "2026-10-21",
+  "size": 5,
+  "grid": [
+    "##SEA",
+    "#BALD",
+    "HELMS",
+    "EATS#",
+    "WRY##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Ocean",
+      "4": "Erik in ten years, probably",
+      "5": "Ship wheels",
+      "6": "Has dinner",
+      "7": "Dryly humorous"
+    },
+    "down": {
+      "1": "Erik after a lost match",
+      "2": "Shade trees",
+      "3": "Commercials",
+      "4": "Grizzly",
+      "5": "Chop"
+    }
+  },
+  "author": "Claude"
+}

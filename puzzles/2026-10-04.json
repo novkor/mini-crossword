@@ -1,0 +1,37 @@
+{
+  "id": 9,
+  "date": "2026-10-04",
+  "size": 7,
+  "grid": [
+    "##COB##",
+    "#MOLAR#",
+    "KINDLED",
+    "ART#DUO",
+    "TERSEST",
+    "#DOUSE#",
+    "##LET##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Corn on the ___",
+      "4": "Back tooth for chewing",
+      "6": "Set alight, like Erik's stew",
+      "8": "Gallery display",
+      "9": "You and Erik on a voice call, say",
+      "10": "Most curt",
+      "12": "Put out, as a kitchen fire Erik started",
+      "13": "Allow"
+    },
+    "down": {
+      "1": "What a remote gives you",
+      "2": "Not new",
+      "3": "Like Erik's head in 2040, compared to all his friends",
+      "4": "Stuck in the mud",
+      "5": "Recycle, in a way",
+      "6": "Erik's assassin main, for short",
+      "7": "Polka ___",
+      "11": "Take to court"
+    }
+  },
+  "author": "Claude"
+}

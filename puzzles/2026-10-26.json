@@ -1,0 +1,29 @@
+{
+  "id": 31,
+  "date": "2026-10-26",
+  "size": 5,
+  "grid": [
+    "CAN##",
+    "ANEW#",
+    "TAXED",
+    "#LURE",
+    "##SEW"
+  ],
+  "clues": {
+    "across": {
+      "1": "Tin",
+      "4": "Again",
+      "6": "Strained",
+      "8": "Fishing bait",
+      "9": "Stitch"
+    },
+    "down": {
+      "1": "Erik's only roommate, and his longest relationship",
+      "2": "Fussy about details, informally",
+      "3": "Destroy theirs to win",
+      "5": "Used to be",
+      "7": "Morning moisture on the grass"
+    }
+  },
+  "author": "Claude"
+}

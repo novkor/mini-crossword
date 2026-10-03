@@ -1,0 +1,29 @@
+{
+  "id": 19,
+  "date": "2026-10-14",
+  "size": 5,
+  "grid": [
+    "#STEW",
+    "SPADE",
+    "TOXIN",
+    "ERECT",
+    "PEST#"
+  ],
+  "clues": {
+    "across": {
+      "1": "Dish Erik burned while babysitting it",
+      "5": "Garden digging tool",
+      "6": "Poison",
+      "7": "Build, as a tent",
+      "8": "Nuisance"
+    },
+    "down": {
+      "1": "Mushroom's seed",
+      "2": "Payments to the state",
+      "3": "Official decree",
+      "4": "Left",
+      "5": "Stair part"
+    }
+  },
+  "author": "Claude"
+}

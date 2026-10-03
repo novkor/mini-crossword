@@ -1,0 +1,29 @@
+{
+  "id": 35,
+  "date": "2026-10-30",
+  "size": 5,
+  "grid": [
+    "##LAP",
+    "#GAME",
+    "OUTER",
+    "WREN#",
+    "LUX##"
+  ],
+  "clues": {
+    "across": {
+      "1": "Circuit of a track",
+      "4": "Match, or what Erik keeps losing",
+      "5": "External",
+      "6": "Small brown songbird",
+      "7": "Demacian mage with a rainbow laser ult"
+    },
+    "down": {
+      "1": "Rubbery material",
+      "2": "Prayer ending",
+      "3": "For each",
+      "4": "Expert",
+      "5": "Night bird"
+    }
+  },
+  "author": "Claude"
+}

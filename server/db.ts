@@ -116,16 +116,21 @@ export interface FinishedRow {
  * unassisted solves by time, then assisted solves by time, then give-ups.
  * Players still playing are never included. Only names and results: no letters.
  */
-export function finishedAttempts(db: DB, day: string): FinishedRow[] {
+export function finishedAttempts(db: DB, day: string, puzzleId: number): FinishedRow[] {
   // ponytail: returns every finisher; add LIMIT + "your rank" query if a day ever has thousands of players
   return db
     .prepare(
       `SELECT a.user_id, u.username, u.avatar, a.status, a.assisted, a.ended_at - a.started_at AS time_ms
        FROM daily_attempts a JOIN users u ON u.id = a.user_id
-       WHERE a.day = ? AND a.status != 'playing'
+       WHERE a.day = ? AND a.puzzle_id = ? AND a.status != 'playing'
        ORDER BY a.status = 'gaveup', a.assisted, time_ms, a.ended_at`,
     )
-    .all(day) as FinishedRow[];
+    .all(day, puzzleId) as FinishedRow[];
+}
+
+/** Remove a player's attempt for a day (used when that day's puzzle was swapped). */
+export function deleteAttempt(db: DB, userId: string, day: string) {
+  db.prepare('DELETE FROM daily_attempts WHERE user_id = ? AND day = ?').run(userId, day);
 }
 
 /** The days a player solved (for streaks). */

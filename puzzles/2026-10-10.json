@@ -1,0 +1,29 @@
+{
+  "id": 15,
+  "date": "2026-10-10",
+  "size": 5,
+  "grid": [
+    "OARS#",
+    "PRONE",
+    "TOTAL",
+    "SMOCK",
+    "#ARKS"
+  ],
+  "clues": {
+    "across": {
+      "1": "Rowing pair",
+      "5": "Lying face down",
+      "7": "Sum",
+      "8": "Painter's overall",
+      "9": "Boats like Noah's"
+    },
+    "down": {
+      "1": "Chooses, with \"for\"",
+      "2": "Pleasant kitchen smell (unless Erik is cooking)",
+      "3": "Helicopter blade",
+      "4": "What Erik is not, despite what he thinks",
+      "6": "Big antlered deer"
+    }
+  },
+  "author": "Claude"
+}
